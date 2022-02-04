@@ -1,13 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
 
 export const Skills = () => {
-  
-  useEffect(() => { axios.get('URL') }, []);
-  useEffect(() => 
-    { 
-      axios.get('https://api.github.com/users/horitomoyuki/repos').then((response) => console.log(response)) 
-    }, []);
+  const [data, setData] = useState(null);
+  console.log(data);
+  // useEffect(() => { axios.get('https://api.github.com/users/USER_NAME/repos').then((response) => console.log(response)) }, []);
+  useEffect(() => {axios.get('https://api.github.com/users/USER_NAME/repos').then((response) => setData(response)) }, []);
   return (
     <div id="skills">
       <div className="container">
