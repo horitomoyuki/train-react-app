@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import axios from 'axios';
+import { skillReducer, initialState, actionTypes } from '../reducers/skillReducer';
+
 
 export const Skills = () => {
-  const [languageList, setLanguageList] = useState([]);
-  console.log(languageList);
+  const [state, dispatch] = useReducer(skillReducer, initialState);
   
   useEffect(() => {
     axios.get('https://api.github.com/users/USER_NAME/repos')
@@ -13,6 +14,18 @@ export const Skills = () => {
         // generateLanguageCountObj()は引数にallLanguageListを受け取り、それを整形して返す
         const countedLanguageList = generateLanguageCountObj(languageList);
         setLanguageList(countedLanguageList);
+      });
+    // GitHubAPIを叩いて、成功時とエラー時を処理分け
+    dispatch({ type: actionTypes.fetch });
+    axios.get('https://api.github.com/users/USER_NAME/repos')
+      .then((response) => {
+        const languageList = response.data.map(res => res.language);
+        const countedLanguageList = generateLanguageCountObj(languageList);
+        // リクエストを成功した場合、レスポンスもステートにセット
+        dispatch({ type: actionTypes.success, payload: { languageList: countedLanguageList } });
+      })
+      .catch(() => {
+        dispatch({ type: actionTypes.error });
       });
   }, []);
   // allLanguageListからfilterを使い、null以外を抽出して配列を生成。
