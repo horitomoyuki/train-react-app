@@ -7,14 +7,6 @@ export const Skills = () => {
   const [state, dispatch] = useReducer(skillReducer, initialState);
   
   useEffect(() => {
-    axios.get('https://api.github.com/users/USER_NAME/repos')
-      .then((response) => {
-        // プログラミング言語のデータを取得
-        const languageList = response.data.map(res => res.language);
-        // generateLanguageCountObj()は引数にallLanguageListを受け取り、それを整形して返す
-        const countedLanguageList = generateLanguageCountObj(languageList);
-        setLanguageList(countedLanguageList);
-      });
     // GitHubAPIを叩いて、成功時とエラー時を処理分け
     dispatch({ type: actionTypes.fetch });
     axios.get('https://api.github.com/users/USER_NAME/repos')
