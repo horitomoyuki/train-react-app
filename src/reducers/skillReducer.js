@@ -1,6 +1,6 @@
 import { requestStates } from '../constants';
 
-export const requestStates = {
+export const actionTypes = {
   initial: 'INITIAL',
   fetch: 'FETCHING',
   success: 'FETCH_SUCCESS',
